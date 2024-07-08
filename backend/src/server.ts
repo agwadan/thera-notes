@@ -2,7 +2,7 @@ import express from 'express';
 import { connectDB } from './config/db';
 import dotenv from 'dotenv';
  import authRouter from './routes/authRoutes';
-/*import journalEntryRouter from './routes/journalRoutes'; */
+import journalRouter from './routes/journalRoutes';
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRouter);
-/*app.use('/api/journal', journalEntryRouter); */
+app.use('/api/journal', journalRouter);
 
 
 app.get('/', (req, res) => {

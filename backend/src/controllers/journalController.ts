@@ -1,5 +1,6 @@
+// src/controllers/journalController.ts
 import { Request, Response } from 'express';
-import JournalEntry, { JournalDocument } from '../models/journal';
+import JournalEntry from '../models/journal';
 import { JournalRepository } from '../repositories/journalRepository';
 
 const journalRepository = new JournalRepository();
@@ -7,7 +8,7 @@ const journalRepository = new JournalRepository();
 export class JournalController {
   static async create(req: Request, res: Response) {
     const { title, content, category, date } = req.body;
-    const userId = req.user.id; // assuming user is set in the request
+    const userId = req.user!.id; // `!` tells TypeScript that `user` is defined
     try {
       const journal = new JournalEntry({ title, content, category, date, user: userId });
       await journalRepository.save(journal);
@@ -15,6 +16,9 @@ export class JournalController {
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
+        console.log('====================================');
+        console.log(error.message);
+        console.log('====================================');
       } else {
         res.status(400).json({ message: 'An unknown error occurred' });
       }
@@ -22,7 +26,7 @@ export class JournalController {
   }
 
   static async getAll(req: Request, res: Response) {
-    const userId = req.user.id; // assuming user is set in the request
+    const userId = req.user!.id;
     try {
       const entries = await journalRepository.findByUser(userId);
       res.json(entries);
