@@ -1,16 +1,18 @@
-// src/controllers/journalController.ts
 import { Request, Response } from 'express';
-import JournalEntry from '../models/journal';
+import Journal from '../models/journal';
 import { JournalRepository } from '../repositories/journalRepository';
 
 const journalRepository = new JournalRepository();
-
 export class JournalController {
   static async create(req: Request, res: Response) {
     const { title, content, category, date } = req.body;
-    const userId = req.user!.id; // `!` tells TypeScript that `user` is defined
+    const userId = req.user!.id; 
     try {
-      const journal = new JournalEntry({ title, content, category, date, user: userId });
+      const journal = new Journal({ title, content, category, date, user: userId });
+      console.log('====================================');
+      console.log(`Journal below \n`);
+      console.log(journal);
+      console.log('====================================');
       await journalRepository.save(journal);
       res.status(201).json(journal);
     } catch (error) {
@@ -26,10 +28,11 @@ export class JournalController {
   }
 
   static async getAll(req: Request, res: Response) {
-    const userId = req.user!.id;
+    const userId = req.user!.id; 
+
     try {
-      const entries = await journalRepository.findByUser(userId);
-      res.json(entries);
+      const journals = await Journal.find({ userId });
+      res.json(journals);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
@@ -38,7 +41,6 @@ export class JournalController {
       }
     }
   }
-
   static async update(req: Request, res: Response) {
     const { id } = req.params;
     const update = req.body;

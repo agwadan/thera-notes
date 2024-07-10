@@ -1,7 +1,7 @@
-import mongoose, {Schema, Document} from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import { UserDocument } from "./User";
 
-export interface JournalDocument extends Document{
+export interface JournalDocument extends Document {
   title: string;
   content: string;
   category: string;
@@ -15,6 +15,6 @@ const JournalSchema: Schema = new Schema({
   category: { type: String, required: true },
   date: { type: Date, default: Date.now },
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
-})
+});
 
 export default mongoose.model<JournalDocument>('Journal', JournalSchema);

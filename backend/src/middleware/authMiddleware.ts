@@ -1,4 +1,3 @@
-// src/middleware/authMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -14,10 +13,10 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: string; username: string };
-    req.user = { id: decoded.id, username: decoded.username };
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string; username: string };
+    req.user = { id: decoded.userId, username: decoded.username };
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Invalid access token' });
-  }
+  } 
 };
