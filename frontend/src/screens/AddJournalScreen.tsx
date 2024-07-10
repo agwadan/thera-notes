@@ -2,20 +2,31 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
-const AddJournalScreen = () => {
+const AddJournalScreen = ({ navigation }: { navigation: any }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
+  const { token } = useAuth();
 
   const handleAddJournal = async () => {
     try {
-      await axios.post("http://127.0.0.1:3000/api/journals", {
-        title,
-        content,
-        category,
-      });
-      // Optionally navigate to list screen or show success message
+      await axios.post(
+        "http://127.0.0.1:3000/api/journal",
+        {
+          title,
+          content,
+          category,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send the token in the request headers
+          },
+        }
+      );
+      // Optionally navigate to the home screen or show a success message
+      navigation.navigate("Home");
     } catch (error) {
       console.error("Failed to add journal:", error);
       // Handle error

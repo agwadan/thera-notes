@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState("");
@@ -31,10 +32,16 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         }
       );
 
-      const { token } = response.data;
+      const { token, user } = response.data;
 
       login(token);
-      console.log("Login response:", response.data); // Log response for debugging
+      await AsyncStorage.setItem("userToken", token);
+      await AsyncStorage.setItem("userDetails", JSON.stringify(user));
+
+      console.log("Login response:", response.data);
+      console.log("====================================");
+      console.log(AsyncStorage);
+      console.log("====================================");
       navigation.navigate("Home"); // Redirect to home screen upon successful login
     } catch (error) {
       console.error("Login error:", error);
