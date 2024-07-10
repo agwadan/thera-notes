@@ -1,9 +1,17 @@
 // src/screens/RegisterScreen.tsx
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +52,12 @@ const RegisterScreen = () => {
       />
       {error && <Text style={styles.error}>{error}</Text>}
       <Button title="Register" onPress={handleRegister} />
+      <View style={styles.loginContainer}>
+        <Text style={styles.loginText}>Already have an account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.loginLink}>Login</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -70,6 +84,17 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     marginBottom: 10,
+  },
+  loginContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  loginText: {
+    marginRight: 5,
+  },
+  loginLink: {
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });
 
