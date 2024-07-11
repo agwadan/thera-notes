@@ -9,10 +9,7 @@ export class JournalController {
     const userId = req.user!.id; 
     try {
       const journal = new Journal({ title, content, category, date, user: userId });
-      console.log('====================================');
-      console.log(`Journal below \n`);
-      console.log(journal);
-      console.log('====================================');
+    
       await journalRepository.save(journal);
       res.status(201).json(journal);
     } catch (error) {
@@ -28,10 +25,16 @@ export class JournalController {
   }
 
   static async getAll(req: Request, res: Response) {
-    const userId = req.user!.id; 
+    const user = req.user!.id; 
+    console.log('====================================');
+    console.log(req.user);
+    console.log('====================================');
 
     try {
-      const journals = await Journal.find({ userId });
+      const journals = await Journal.find({ user});
+      console.log('====================================');
+      console.log(res.json(journals));
+      console.log('====================================');
       res.json(journals);
     } catch (error) {
       if (error instanceof Error) {

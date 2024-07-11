@@ -8,16 +8,14 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null); // State for error handling
+  const [error, setError] = useState<string | null>(null);
   const { login } = useAuth();
 
   const handleLogin = async () => {
-    // Validation (optional): Check if username and password are not empty
     if (!username.trim() || !password.trim()) {
       setError("Please enter both username and password");
       return;
@@ -32,20 +30,12 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         }
       );
 
-      const { token, user } = response.data;
-
-      login(token);
-      await AsyncStorage.setItem("userToken", token);
-      await AsyncStorage.setItem("userDetails", JSON.stringify(user));
-
-      console.log("Login response:", response.data);
-      console.log("====================================");
-      console.log(AsyncStorage);
-      console.log("====================================");
-      navigation.navigate("Home"); // Redirect to home screen upon successful login
+      const { token } = response.data;
+      await login(token);
+      navigation.navigate("Home");
     } catch (error) {
       console.error("Login error:", error);
-      /* setError(error.message || "An error occurred"); */
+      setError("Invalid username or password");
     }
   };
 
@@ -68,13 +58,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-
-      <View style={styles.registerContainer}>
-        <Text style={styles.registerText}>Don't have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.registerLink}>Register</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -108,17 +91,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginBottom: 10,
-  },
-  registerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  registerText: {
-    marginRight: 5,
-  },
-  registerLink: {
-    color: "blue",
-    textDecorationLine: "underline",
   },
 });
 

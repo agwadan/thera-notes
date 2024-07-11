@@ -1,5 +1,11 @@
-// src/context/AuthContext.tsx
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -14,16 +20,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
-  const login = (authToken: string) => {
+  useEffect(() => {
+    const loadToken = async () => {
+      const storedToken = await AsyncStorage.getItem("token");
+      if (storedToken) {
+        setToken(storedToken);
+        setIsAuthenticated(true);
+      }
+    };
+    loadToken();
+  }, []);
+
+  const login = async (authToken: string) => {
     setIsAuthenticated(true);
     setToken(authToken);
-    // Optionally, store the token in AsyncStorage for persistent login
+    await AsyncStorage.setItem("token", authToken);
   };
 
-  const logout = () => {
+  const logout = async () => {
     setIsAuthenticated(false);
     setToken(null);
-    // Optionally, remove the token from AsyncStorage
+    await AsyncStorage.removeItem("token");
   };
 
   return (

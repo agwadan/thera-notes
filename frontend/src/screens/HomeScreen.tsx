@@ -1,4 +1,3 @@
-// src/screens/HomeScreen.tsx
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -16,16 +15,11 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [journals, setJournals] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigation.navigate("Login");
-      return;
-    }
-
     const fetchJournals = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:3000/api/journals", {
+        const response = await axios.get("http://127.0.0.1:3000/api/journal", {
           headers: {
-            Authorization: `Bearer ${token}`, // Use the actual token
+            Authorization: `Bearer ${token}`,
           },
         });
         setJournals(response.data);
@@ -34,8 +28,10 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       }
     };
 
-    fetchJournals();
-  }, [isAuthenticated, token, navigation]);
+    if (isAuthenticated && token) {
+      fetchJournals();
+    }
+  }, [isAuthenticated, token]);
 
   const handleAddJournal = () => {
     navigation.navigate("AddJournal");
@@ -46,7 +42,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   };
 
   if (!isAuthenticated) {
-    return null; // or a loading spinner
+    return null;
   }
 
   return (
