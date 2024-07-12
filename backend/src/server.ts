@@ -17,7 +17,6 @@ app.use(cors());
 app.use('/api/auth', authRouter);
 app.use('/api/journal', journalRouter);
 
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })

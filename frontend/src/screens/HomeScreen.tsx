@@ -22,6 +22,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         setJournals(response.data);
       } catch (error) {
         console.error("Failed to fetch journals:", error);
@@ -34,6 +35,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   }, [isAuthenticated, token]);
 
   const handleAddJournal = () => {
+    console.log("====================================");
+    console.log(`Edit journal`);
+    console.log("====================================");
     navigation.navigate("AddJournal");
   };
 

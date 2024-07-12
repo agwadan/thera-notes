@@ -29,6 +29,9 @@ export class AuthController {
 
   static async login(req: Request, res: Response) {
     const { username, password } = req.body;
+    console.log('====================================');
+    console.log(req.body);
+    console.log('====================================');
     try {
       const user = await userRepository.findByUsername(username);
       if (!user || !await bcrypt.compare(password, user.password)) {

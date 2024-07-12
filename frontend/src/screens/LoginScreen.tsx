@@ -39,6 +39,18 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  /*  const handleLogin = () => {
+    fetch("http://127.0.0.1:3000/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    })
+      .then((res) => console.log(res.body))
+      .catch((err) => console.log(err));
+  }; */
+
   return (
     <View style={styles.container}>
       <TextInput

@@ -26,15 +26,9 @@ export class JournalController {
 
   static async getAll(req: Request, res: Response) {
     const user = req.user!.id; 
-    console.log('====================================');
-    console.log(req.user);
-    console.log('====================================');
 
     try {
       const journals = await Journal.find({ user});
-      console.log('====================================');
-      console.log(res.json(journals));
-      console.log('====================================');
       res.json(journals);
     } catch (error) {
       if (error instanceof Error) {
@@ -44,6 +38,28 @@ export class JournalController {
       }
     }
   }
+
+  static async getById(req: Request, res: Response) {
+    const { id } = req.params;
+    const user = req.user!.id;
+
+    try {
+      const journal = await Journal.findOne({ _id: id, user: user });
+
+      if (!journal) {
+        return res.status(404).json({ message: 'Journal entry not found' });
+      }
+
+      res.json(journal);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(400).json({ message: 'An unknown error occurred' });
+      }
+    }
+  }
+
   static async update(req: Request, res: Response) {
     const { id } = req.params;
     const update = req.body;

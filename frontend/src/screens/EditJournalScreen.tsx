@@ -1,7 +1,7 @@
-// src/screens/EditJournalScreen.tsx
 import React, { useState, useEffect } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 interface Journal {
   _id: string;
@@ -21,15 +21,24 @@ const EditJournalScreen = ({
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
+  const { token } = useAuth();
 
   useEffect(() => {
     fetchJournal();
   }, []);
 
   const fetchJournal = async () => {
+    console.log("====================================");
+    console.log(token);
+    console.log("====================================");
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3000/api/journal/${journalId}`
+        `http://127.0.0.1:3000/api/journal/${journalId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const journalData: Journal = response.data;
       setTitle(journalData.title);
@@ -37,21 +46,23 @@ const EditJournalScreen = ({
       setCategory(journalData.category);
     } catch (error) {
       console.error("Failed to fetch journal:", error);
-      // Handle error
     }
   };
 
   const handleUpdateJournal = async () => {
     try {
-      await axios.put(`http://127.0.0.1:3000/api/journals/${journalId}`, {
-        title,
-        content,
-        category,
-      });
-      // Optionally navigate to list screen or show success message
+      await axios.put(
+        `http://127.0.0.1:3000/api/journal/${journalId}`,
+        { title, content, category },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      navigation.navigate("Home");
     } catch (error) {
       console.error("Failed to update journal:", error);
-      // Handle error
     }
   };
 
