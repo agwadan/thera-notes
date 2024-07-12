@@ -64,8 +64,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
-      <Button title="Add Journal" onPress={handleAddJournal} />
-      <Button title="Logout" onPress={logout} />
       <FlatList
         data={journals}
         keyExtractor={(item) => item._id}
@@ -83,6 +81,10 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           </TouchableOpacity>
         )}
       />
+      <View style={styles.buttonContainer}>
+        <Button title="Add Journal" onPress={handleAddJournal} />
+        <Button title="Logout" onPress={logout} />
+      </View>
     </View>
   );
 };
@@ -101,6 +103,12 @@ const styles = StyleSheet.create({
   },
   journalTitle: {
     fontWeight: "bold",
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 16,
+    left: 16,
+    right: 16,
   },
 });
 
