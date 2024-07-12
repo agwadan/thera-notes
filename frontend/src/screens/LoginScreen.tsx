@@ -29,7 +29,9 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           password,
         }
       );
-
+      console.log("====================================");
+      console.log(`Login Sucessful`);
+      console.log("====================================");
       const { token } = response.data;
       await login(token);
       navigation.navigate("Home");
