@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
-  Button,
   FlatList,
   TouchableOpacity,
   StyleSheet,
@@ -78,12 +77,26 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           <TouchableOpacity onPress={() => handleEditJournal(item.id)}>
             <View style={styles.journalItem}>
               <Text style={styles.journalTitle}>{item.title}</Text>
-              <Text>{item.content}</Text>
-              <Button
-                title="Delete"
-                onPress={() => handleDeleteJournal(item.id)}
-                color="red"
-              />
+              <Text style={styles.journalBody}>{item.content}</Text>
+              <View style={styles.rowThree}>
+                <View style={styles.sourceLine}></View>
+                <View style={styles.actions}>
+                  <TouchableOpacity onPress={() => handleEditJournal(item.id)}>
+                    <Image
+                      source={require("../../assets/icons/icon-edit-white.png")}
+                      style={styles.icon}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleDeleteJournal(item.id)}
+                  >
+                    <Image
+                      source={require("../../assets/icons/icon-delete-white.png")}
+                      style={styles.icon}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -130,17 +143,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.greyLight,
-    padding: 16,
+    padding: 24,
   },
   journalItem: {
     padding: 16,
+    backgroundColor: colors.purpleLight,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
     marginBottom: 10,
+    borderRadius: 12,
   },
   journalTitle: {
+    color: colors.white,
+    fontSize: 20,
     fontWeight: "bold",
   },
+  journalBody: {
+    color: colors.white,
+    fontStyle: "italic",
+    marginTop: 16,
+  },
+  rowThree: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+    marginTop: 16,
+  },
+  sourceLine: {
+    height: 2,
+    width: "75%",
+    backgroundColor: colors.greyLight,
+  },
+  actions: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   buttonContainer: {
     position: "absolute",
     bottom: 16,
