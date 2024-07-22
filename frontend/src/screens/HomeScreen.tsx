@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Image,
 } from "react-native";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useFocusEffect } from "@react-navigation/native";
+import colors from "../constants/colors";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const { isAuthenticated, logout, token } = useAuth();
@@ -86,9 +88,39 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           </TouchableOpacity>
         )}
       />
-      <View style={styles.buttonContainer}>
-        <Button title="Add Journal" onPress={handleAddJournal} />
-        <Button title="Logout" onPress={logout} />
+
+      <View style={styles.footerNavigation}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        >
+          <Image
+            source={require("../../assets/icons/icon-home-purple.png")}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleAddJournal}>
+          <Image
+            source={require("../../assets/icons/icon-add-note-purple.png")}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => console.log(`Profile`)}>
+          <Image
+            source={require("../../assets/icons/icon-user-purple.png")}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={logout}>
+          <Image
+            source={require("../../assets/icons/icon-logout-purple.png")}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -97,7 +129,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.greyLight,
     padding: 16,
   },
   journalItem: {
@@ -114,6 +146,21 @@ const styles = StyleSheet.create({
     bottom: 16,
     left: 16,
     right: 16,
+  },
+  footerNavigation: {
+    position: "absolute",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    backgroundColor: colors.white,
+    paddingVertical: 10,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  icon: {
+    width: 30,
+    height: 30,
   },
 });
 
