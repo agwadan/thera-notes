@@ -1,4 +1,3 @@
-// src/screens/AddJournalScreen.tsx
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import axios from "axios";
@@ -18,18 +17,19 @@ const AddJournalScreen = ({ navigation }: { navigation: any }) => {
           title,
           content,
           category,
+          date: new Date(),
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Send the token in the request headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      // Optionally navigate to the home screen or show a success message
+
       navigation.navigate("Home");
     } catch (error) {
       console.error("Failed to add journal:", error);
-      // Handle error
+      alert("There was an error updating your journal");
     }
   };
 

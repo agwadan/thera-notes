@@ -1,22 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import User from '../models/User';
 
-dotenv.config();
+const SECRET_KEY = "your_secret_key";
 
-const JWT_SECRET = process.env.JWT_SECRET || '';
-
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1]; // Assumes 'Bearer <token>'
-  if (!token) {
-    return res.status(401).json({ message: 'Access token missing' });
-  }
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'No token provided' });
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string; username: string };
-    req.user = { id: decoded.userId, username: decoded.username };
+    const decoded: any = jwt.verify(token, SECRET_KEY);
+    (req as any).user = await User.findByPk(decoded.id);
+    if (!req.user) return res.status(401).json({ message: 'Invalid token' });
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid access token' });
-  } 
+    res.status(401).json({ message: 'Invalid token' });
+  }
 };

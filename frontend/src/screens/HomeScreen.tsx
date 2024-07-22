@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,38 +10,41 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const { isAuthenticated, logout, token } = useAuth();
   const [journals, setJournals] = useState<any[]>([]);
 
-  useEffect(() => {
-    const fetchJournals = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:3000/api/journal", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setJournals(response.data);
-      } catch (error) {
-        console.error("Failed to fetch journals:", error);
-      }
-    };
-
-    if (isAuthenticated && token) {
-      fetchJournals();
+  const fetchJournals = useCallback(async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:3000/api/journal", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setJournals(response.data);
+    } catch (error) {
+      console.error("Failed to fetch journals:", error);
     }
-  }, [isAuthenticated, token]);
+  }, [token]);
 
-  /* ***Function to Navigate to a new screen to add a journal *** */
+  useFocusEffect(
+    useCallback(() => {
+      if (isAuthenticated && token) {
+        fetchJournals();
+      }
+    }, [isAuthenticated, token, fetchJournals])
+  );
+
   const handleAddJournal = () => {
     navigation.navigate("AddJournal");
   };
 
   const handleEditJournal = (journalId: string) => {
-    navigation.navigate("EditJournal", { journalId });
+    navigation.navigate("EditJournal", {
+      journalId,
+    });
   };
 
   const handleDeleteJournal = async (journalId: string) => {
@@ -51,7 +54,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setJournals(journals.filter((journal) => journal._id !== journalId));
+      setJournals((prevJournals) =>
+        prevJournals.filter((journal) => journal.id !== journalId)
+      );
     } catch (error) {
       console.error("Failed to delete journal:", error);
       Alert.alert("Error", "Failed to delete journal. Please try again.");
@@ -66,15 +71,15 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     <View style={styles.container}>
       <FlatList
         data={journals}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleEditJournal(item._id)}>
+          <TouchableOpacity onPress={() => handleEditJournal(item.id)}>
             <View style={styles.journalItem}>
               <Text style={styles.journalTitle}>{item.title}</Text>
               <Text>{item.content}</Text>
               <Button
                 title="Delete"
-                onPress={() => handleDeleteJournal(item._id)}
+                onPress={() => handleDeleteJournal(item.id)}
                 color="red"
               />
             </View>
@@ -99,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    marginBottom: 10, // Adding some margin to separate journal items
+    marginBottom: 10,
   },
   journalTitle: {
     fontWeight: "bold",

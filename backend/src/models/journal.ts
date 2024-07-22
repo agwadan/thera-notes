@@ -1,20 +1,60 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { UserDocument } from "./User";
+import { DataTypes, Model, Optional } from "sequelize";
+import { sequelize } from '../config/sequelize';
 
-export interface JournalDocument extends Document {
-  title: string;
-  content: string;
-  category: string;
-  date: Date;
-  user: UserDocument['_id'];
+interface JournalAttributes{
+id: number;
+title: string;
+content: string;
+category: string;
+date: Date;
+userId: string;
 }
 
-const JournalSchema: Schema = new Schema({
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  category: { type: String, required: true },
-  date: { type: Date, default: Date.now },
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
-});
+interface JournalCreationAttributes extends Optional<JournalAttributes, "id">{}
 
-export default mongoose.model<JournalDocument>('Journal', JournalSchema);
+class Journal extends Model<JournalAttributes, JournalCreationAttributes>
+implements JournalAttributes{
+  public id!: number;
+  public title!: string;
+  public content!: string;
+  public category!: string;
+  public date!: Date;
+  public userId!: string;
+}
+
+Journal.init(
+  {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    title: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    content: {
+      type: new DataTypes.STRING(1024),
+      allowNull: false,
+    },
+    category: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    userId: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+  },
+  {
+    sequelize, 
+    modelName: 'Journal',
+    tableName: "journals",
+  }
+);
+
+export default Journal;

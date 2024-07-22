@@ -1,13 +1,15 @@
 import { Router } from 'express';
 import { JournalController } from '../controllers/journalController';
-import { authMiddleware } from '../middleware/authMiddleware';
+import { authenticate } from '../middleware/authMiddleware';
 
 const router = Router();
 
-router.post('/', authMiddleware, JournalController.create);
-router.get('/', authMiddleware, JournalController.getAll);
-router.get('/:id', authMiddleware, JournalController.getById);
-router.put('/:id', authMiddleware, JournalController.update);
-router.delete('/:id', authMiddleware, JournalController.delete);
+router.use(authenticate);
+
+router.post('/', JournalController.create);
+router.get('/', JournalController.getAll);
+router.get('/:id', JournalController.getById);
+router.put('/:id', JournalController.update);
+router.delete('/:id', JournalController.delete);
 
 export default router;
