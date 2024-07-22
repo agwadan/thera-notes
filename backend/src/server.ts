@@ -1,9 +1,11 @@
 import express from 'express';
 import cors from 'cors';
-import { connectDB } from './config/db';
 import dotenv from 'dotenv';
- import authRouter from './routes/authRoutes';
+import authRouter from './routes/authRoutes';
 import journalRouter from './routes/journalRoutes';
+import User from './models/User';
+import Journal from './models/Journal';
+import { sequelize } from './config/sequelize';
 
 dotenv.config();
 
@@ -24,10 +26,12 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-  await connectDB();
 
-  app.listen(PORT, () => {
+  app.listen(PORT, async () => {
     console.log(`Server is running on port ${PORT}`);
+    await sequelize.sync({ force: false }).then(() => {
+      console.log('Database & tables created!');
+    });
   });
 };
 

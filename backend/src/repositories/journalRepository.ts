@@ -1,4 +1,4 @@
-import Journal, { JournalDocument } from '../models/journal';
+import Journal, { JournalDocument } from '../models/Journal';
 
 export class JournalRepository {
   async findByUser(userId: string): Promise<JournalDocument[]> {

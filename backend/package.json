@@ -29,6 +29,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.14.11",
     "@types/sequelize": "^4.28.20",
+    "sequelize-cli": "^6.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   }
