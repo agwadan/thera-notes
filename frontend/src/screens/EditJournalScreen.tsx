@@ -28,9 +28,6 @@ const EditJournalScreen = ({
   }, []);
 
   const fetchJournal = async () => {
-    console.log("====================================");
-    console.log(token);
-    console.log("====================================");
     try {
       const response = await axios.get(
         `http://127.0.0.1:3000/api/journal/${journalId}`,

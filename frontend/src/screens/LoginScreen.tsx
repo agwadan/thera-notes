@@ -29,9 +29,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           password,
         }
       );
-      console.log("====================================");
-      console.log(`Login Sucessful`);
-      console.log("====================================");
       const { token } = response.data;
       await login(token);
       navigation.navigate("Home");
@@ -40,18 +37,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       setError("Invalid username or password");
     }
   };
-
-  /*  const handleLogin = () => {
-    fetch("http://127.0.0.1:3000/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    })
-      .then((res) => console.log(res.body))
-      .catch((err) => console.log(err));
-  }; */
 
   return (
     <View style={styles.container}>
@@ -72,6 +57,12 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
+      <View style={styles.registerContainer}>
+        <Text style={styles.registerText}>Don't have an account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text style={styles.registerLink}>Register</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -105,6 +96,17 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginBottom: 10,
+  },
+  registerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  registerText: {
+    marginRight: 5,
+  },
+  registerLink: {
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });
 

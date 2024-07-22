@@ -1,4 +1,3 @@
-// src/screens/RegisterScreen.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -26,8 +25,7 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
         }
       );
       Alert.alert("Registration Successful", "You can now log in.");
-      console.log("Registration successful", response.data);
-      // Optionally, navigate to login screen or any other screen upon successful registration
+      navigation.navigate("Login");
     } catch (error) {
       console.error("Registration error", error);
       /*  setError(error.response?.data?.message || "An error occurred"); */

@@ -6,9 +6,6 @@ export class JournalController {
   /* Method to Add New Journal
   -----------------------------------*/
   static async create(req: Request, res: Response) {
-    console.log('====================================');
-    console.log(req.body);
-    console.log('====================================');
     const { title, content, category, date } = req.body;
     const userId = req.user!.id; 
     try {
@@ -16,9 +13,6 @@ export class JournalController {
       res.status(201).json(journal);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
-      console.log('====================================');
-      console.log(error.message);
-      console.log('====================================');
     }
   }
 
@@ -34,8 +28,16 @@ export class JournalController {
     }
   }
 
+/* Method to Get One Journal By It's Id
+----------------------------------------- */
   static async getById(req: Request, res: Response) {
+  
+    console.log('====================================');
+    console.log(req.body);
+    console.log(req.params);
+    console.log('====================================');
     const { id } = req.params;
+  
     try {
       const journal = await Journal.findByPk(id);
       if (!journal) {
