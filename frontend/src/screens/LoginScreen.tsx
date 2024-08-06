@@ -5,8 +5,10 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import axios from "axios";
+import colors from "../constants/colors";
 import { useAuth } from "../context/AuthContext";
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
@@ -40,15 +42,22 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("../../assets/logos/logo-colored.png")}
+        style={styles.logo}
+      />
+      <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
+        placeholderTextColor={colors.purpleLight}
         onChangeText={(text) => setUsername(text)}
         value={username}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={colors.purpleLight}
         onChangeText={(text) => setPassword(text)}
         value={password}
         secureTextEntry
@@ -74,24 +83,35 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  input: {
-    height: 50,
-    width: "100%",
-    borderColor: "#ccc",
-    borderWidth: 1,
+  title: {
+    fontSize: 24,
     marginBottom: 20,
-    paddingHorizontal: 10,
+    color: colors.primaryColor,
+  },
+  input: {
+    height: 40,
+    width: "100%",
+    borderColor: colors.primaryColor,
+    borderWidth: 1,
+    borderRadius: 60,
+    margin: 12,
+    paddingHorizontal: 20,
+  },
+  logo: {
+    color: colors.primaryColor,
+    marginBottom: 40,
+    width: 120,
+    height: 120,
   },
   button: {
-    backgroundColor: "blue",
-    width: "100%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: colors.primaryColor,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 50,
+    color: colors.white,
   },
   buttonText: {
-    color: "#fff",
-    fontSize: 18,
+    color: colors.white,
   },
   errorText: {
     color: "red",
@@ -100,13 +120,14 @@ const styles = StyleSheet.create({
   registerContainer: {
     flexDirection: "row",
     alignItems: "center",
+    margin: 12,
   },
   registerText: {
     marginRight: 5,
   },
   registerLink: {
-    color: "blue",
-    textDecorationLine: "underline",
+    color: colors.primaryColor,
+    textDecorationLine: "none",
   },
 });
 

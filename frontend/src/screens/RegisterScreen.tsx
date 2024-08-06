@@ -45,17 +45,19 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
         onChangeText={setUsername}
         value={username}
         placeholder="Username"
+        placeholderTextColor={colors.purpleLight}
       />
       <TextInput
         style={styles.input}
         onChangeText={setPassword}
         value={password}
         placeholder="Password"
+        placeholderTextColor={colors.purpleLight}
         secureTextEntry
       />
       {error && <Text style={styles.error}>{error}</Text>}
       <TouchableOpacity onPress={handleRegister} style={styles.button}>
-        <Text style={styles.registerText}>Register</Text>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
       <View style={styles.loginContainer}>
         <Text style={styles.loginText}>Already have an account?</Text>
@@ -74,7 +76,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  logo: { marginBottom: 40, width: 120, height: 120 },
+  logo: {
+    marginBottom: 40,
+    width: 120,
+    height: 120,
+  },
   button: {
     backgroundColor: colors.primaryColor,
     paddingVertical: 12,
@@ -82,12 +88,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     color: colors.white,
   },
-  registerText: {
+  buttonText: {
     color: colors.white,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    color: colors.primaryColor,
   },
   input: {
     height: 40,
