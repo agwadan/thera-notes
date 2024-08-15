@@ -3,12 +3,13 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  Image,
   StyleSheet,
   Alert,
   TouchableOpacity,
 } from "react-native";
 import axios from "axios";
+import colors from "../constants/colors";
 
 const RegisterScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState("");
@@ -34,22 +35,30 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("../../assets/logos/logo-colored.png")}
+        style={styles.logo}
+      />
       <Text style={styles.title}>Register</Text>
       <TextInput
         style={styles.input}
         onChangeText={setUsername}
         value={username}
         placeholder="Username"
+        placeholderTextColor={colors.purpleLight}
       />
       <TextInput
         style={styles.input}
         onChangeText={setPassword}
         value={password}
         placeholder="Password"
+        placeholderTextColor={colors.purpleLight}
         secureTextEntry
       />
       {error && <Text style={styles.error}>{error}</Text>}
-      <Button title="Register" onPress={handleRegister} />
+      <TouchableOpacity onPress={handleRegister} style={styles.button}>
+        <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
       <View style={styles.loginContainer}>
         <Text style={styles.loginText}>Already have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -67,17 +76,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
+  logo: {
+    marginBottom: 40,
+    width: 120,
+    height: 120,
+  },
+  button: {
+    backgroundColor: colors.primaryColor,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 50,
+    color: colors.white,
+  },
+  buttonText: {
+    color: colors.white,
+  },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    color: colors.primaryColor,
   },
   input: {
     height: 40,
     width: "100%",
-    borderColor: "#ccc",
+    borderColor: colors.primaryColor,
     borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    borderRadius: 60,
+    margin: 12,
+    paddingHorizontal: 20,
   },
   error: {
     color: "red",
@@ -86,13 +112,14 @@ const styles = StyleSheet.create({
   loginContainer: {
     flexDirection: "row",
     alignItems: "center",
+    margin: 12,
   },
   loginText: {
     marginRight: 5,
   },
   loginLink: {
-    color: "blue",
-    textDecorationLine: "underline",
+    color: colors.primaryColor,
+    textDecorationLine: "none",
   },
 });
 
