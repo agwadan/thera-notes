@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import colors from "../constants/colors";
+import localIpAddress from "../constants/network";
 import { useAuth } from "../context/AuthContext";
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
@@ -24,13 +25,10 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:3000/api/auth/login",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post(`${localIpAddress}/api/auth/login`, {
+        username,
+        password,
+      });
       const { token } = response.data;
       await login(token);
       navigation.navigate("Home");

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import colors from "../constants/colors";
+import baseUrl from "../constants/network";
 
 const RegisterScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState("");
@@ -18,13 +19,10 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:3000/api/auth/register",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post(`${baseUrl}/api/auth/register`, {
+        username,
+        password,
+      });
       Alert.alert("Registration Successful", "You can now log in.");
       navigation.navigate("Login");
     } catch (error) {
