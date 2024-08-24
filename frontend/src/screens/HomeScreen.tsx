@@ -12,6 +12,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useFocusEffect } from "@react-navigation/native";
 import colors from "../constants/colors";
+import baseUrl from "../constants/network";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const { isAuthenticated, logout, token } = useAuth();
@@ -19,7 +20,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   const fetchJournals = useCallback(async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:3000/api/journal", {
+      const response = await axios.get(`${baseUrl}/api/journal`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

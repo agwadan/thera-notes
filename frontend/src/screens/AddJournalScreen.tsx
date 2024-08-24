@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import baseUrl from "../constants/network";
 
 const AddJournalScreen = ({ navigation }: { navigation: any }) => {
   const [title, setTitle] = useState("");
@@ -12,7 +13,7 @@ const AddJournalScreen = ({ navigation }: { navigation: any }) => {
   const handleAddJournal = async () => {
     try {
       await axios.post(
-        "http://127.0.0.1:3000/api/journal",
+        `${baseUrl}/api/journal`,
         {
           title,
           content,
