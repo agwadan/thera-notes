@@ -78,7 +78,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           <TouchableOpacity onPress={() => handleEditJournal(item.id)}>
             <View style={styles.journalItem}>
               <Text style={styles.journalTitle}>{item.title}</Text>
-              <Text style={styles.journalBody}>{item.content}</Text>
+              <Text numberOfLines={3} style={styles.journalBody}>{item.content}</Text>
               <View style={styles.rowThree}>
                 <View style={styles.sourceLine}></View>
                 <View style={styles.actions}>
